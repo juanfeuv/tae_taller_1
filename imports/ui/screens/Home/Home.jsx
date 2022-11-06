@@ -14,6 +14,7 @@ import callMethod from '../../callMethod';
 import Filters from './Filters';
 import floatFormat from '../../floatFormat';
 import GeoMap from '../../components/GeoMap/GeoMap';
+import Loading from '../../components/Loading';
 
 const CURSOR_POINTER = { cursor: 'pointer' };
 
@@ -21,10 +22,16 @@ const Home = () => {
   const [list, setList] = useState([]);
   const [value, setValue] = useState(0);
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getColleges = (isMap, query) => {
+    setIsLoading(true);
+
     callMethod('getColleges', { isMap, query })
-      .then(({ res }) => setList(res));
+      .then(({ res }) => {
+        setList(res);
+        setIsLoading(false);
+      });
   };
 
   const handleChange = (_event, newValue) => {
@@ -168,6 +175,7 @@ const Home = () => {
         getColleges={getColleges}
         isMap={value === 0}
       />
+      <Loading open={isLoading} />
     </div>
   );
 }
