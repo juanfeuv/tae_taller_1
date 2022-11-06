@@ -36,7 +36,7 @@ const getColleges = ({ isMap, query = {} }) => {
   }
 
   if (!_.isEmpty(universidad)) {
-    newQuery.universidad = {
+    newQuery._id = {
       $in: universidad,
     };
   }
