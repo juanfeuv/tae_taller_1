@@ -1,18 +1,17 @@
 import 'react-table/react-table.css'
 
-import _ from "lodash";
-
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import ListIcon from '@mui/icons-material/List';
 import MapIcon from '@mui/icons-material/Map';
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import ReactTable from "react-table";
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Tooltip from '@mui/material/Tooltip';
 
 import callMethod from '../../callMethod';
+import Filters from './Filters';
 import floatFormat from '../../floatFormat';
 import GeoMap from '../../components/GeoMap/GeoMap';
 
@@ -21,9 +20,10 @@ const CURSOR_POINTER = { cursor: 'pointer' };
 const Home = () => {
   const [list, setList] = useState([]);
   const [value, setValue] = useState(0);
+  const [open, setOpen] = useState(false);
 
-  const getColleges = (isMap) => {
-    callMethod('getColleges', { isMap })
+  const getColleges = (isMap, query) => {
+    callMethod('getColleges', { isMap, query })
       .then(({ res }) => setList(res));
   };
 
@@ -31,8 +31,6 @@ const Home = () => {
     setValue(newValue);
     getColleges(newValue === 0);
   };
-
-  // const isMap = useMemo(() => value === 0, [value]);
 
   useEffect(() => {
     getColleges(value === 0);
@@ -130,7 +128,9 @@ const Home = () => {
     <div>
       <Grid container alignItems="center">
         <Grid item xs={12} md={6}>
-          <Button variant="contained">Filtros de búsqueda</Button>
+          <Button variant="contained" onClick={() => setOpen(true)}>Filtros de búsqueda</Button>
+          &nbsp;
+          <Button variant="contained" color="warning" onClick={() => getColleges(value === 0)}>Cargar listado inicial</Button>
         </Grid>
         <Grid item xs={12} md={6}>
           <div style={{ float: 'right' }}>
@@ -162,6 +162,12 @@ const Home = () => {
           }
         </Grid>
       </Grid>
+      <Filters
+        open={open}
+        setOpen={setOpen}
+        getColleges={getColleges}
+        isMap={value === 0}
+      />
     </div>
   );
 }

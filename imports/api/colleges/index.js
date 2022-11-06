@@ -1,1 +1,2 @@
 import './getColleges';
+import './getFullColleges';

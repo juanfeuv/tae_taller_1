@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import { Meteor } from 'meteor/meteor';
 
 import Colleges from '../../collections/colleges';
@@ -13,18 +15,41 @@ const transformMap = ({
   costoMatricula,
 });
 
-const getColleges = ({ isMap }) => {
-  const query = {};
+const getColleges = ({ isMap, query = {} }) => {
+  const {
+    universidad, estado, costoMatricula,
+  } = query;
+
+  const newQuery = {};
+
+  if (!_.isEmpty(costoMatricula)) {
+    newQuery.costoMatricula = {
+      $gte: costoMatricula[0],
+      $lte: costoMatricula[1],
+    }
+  }
+
+  if (!_.isEmpty(estado)) {
+    newQuery.estado = {
+      $in: estado,
+    };
+  }
+
+  if (!_.isEmpty(universidad)) {
+    newQuery.universidad = {
+      $in: universidad,
+    };
+  }
 
   if (isMap) {
     return Colleges
-      .find(query)
+      .find(newQuery)
       .fetch()
       .map(transformMap);
   }
 
   return Colleges
-    .find(query, {
+    .find(newQuery, {
       sort: {
         costoMatricula: 1,
       }

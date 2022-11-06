@@ -1,6 +1,9 @@
+import "react-toastify/dist/ReactToastify.css";
+
 import React from 'react';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { toast, ToastContainer } from 'react-toastify';
 
 import DrawerAppBar from './components/Toolbar'
 import Home from './screens/Home/Home';
@@ -14,5 +17,6 @@ export const App = () => (
       </Route>
       <Route path='*' element={<NotFound />} />
     </Routes>
+    <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
   </BrowserRouter >
 );
