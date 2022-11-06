@@ -1,0 +1,9 @@
+.map {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: relative;
+  height: 1000%;
+  /* top: 10%; */
+}

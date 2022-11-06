@@ -7,8 +7,8 @@ const OWNERSHIP_MAP = new Map([
 ]);
 
 export const getEstados = () => {
-  const estados = JSON.parse(Assets.getText('estados.json'));
-  const map = estados.map(({ FIELD1, FIELD2 }) => [FIELD1, FIELD2]);
+  const estados = JSON.parse(Assets.getText('estados_usa.json'));
+  const map = estados.map(({ des, code }) => [des, code]);
 
   return new Map(map);
 };
@@ -16,20 +16,22 @@ export const getEstados = () => {
 export const getFullColleges = () => {
   const colleges = JSON.parse(Assets.getText('collegeScorecard.json'));
   const map = colleges.map(({
-    UNITID, AccredAgency, INSTURL, LATITUDE, LONGITUDE, ZIP,
+    UNITID, AccredAgency, INSTURL, LATITUDE, LONGITUDE, ZIP, STABBR, CITY,
   }) => [UNITID, {
     agency: AccredAgency,
     url: INSTURL,
     latitude: LATITUDE,
     longitude: LONGITUDE,
     zip: ZIP,
+    estado: STABBR,
+    ciudad: CITY,
   }]);
 
   return new Map(map);
 };
 
 export const tranform = ({ estados, colleges }) => ({
-  ID, NOMBRE, CONTROL, COSTO_MATRICULA, ESTADO, INGRESOS_FAMILIARES_M1,
+  ID, NOMBRE, CONTROL, COSTO_MATRICULA, INGRESOS_FAMILIARES_M1,
   INGRESOS_FAMILIARES_H2, Labels_3Clusters
 }) => {
   const _id = String(ID);
@@ -42,8 +44,7 @@ export const tranform = ({ estados, colleges }) => ({
     ownership: CONTROL,
     desOwnership: OWNERSHIP_MAP.get(CONTROL),
     costoMatricula: COSTO_MATRICULA,
-    estado: ESTADO,
-    desEstado: estados.get(ESTADO),
+    desEstado: estados.get(college.estado),
     ingresosFamiliaresH2: INGRESOS_FAMILIARES_H2,
     ingresosFamiliaresM1: INGRESOS_FAMILIARES_M1,
     grupo: Labels_3Clusters,

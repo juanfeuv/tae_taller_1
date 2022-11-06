@@ -9,7 +9,7 @@ import NotFound from './screens/NotFound/NotFound';
 export const App = () => (
   <BrowserRouter >
     <Routes>
-      <Route path='/' element={<DrawerAppBar />}>
+      <Route element={<DrawerAppBar />}>
         <Route path="/" element={<Home />} />
       </Route>
       <Route path='*' element={<NotFound />} />

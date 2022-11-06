@@ -1,45 +1,62 @@
-import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import React, { useState } from 'react';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 
 import { Outlet } from 'react-router-dom';
 
-const drawerWidth = 240;
-const navItems = [
-  {
-    name: 'Home',
-    link: '/',
-  },
-  {
-    name: 'About',
-    link: '/about',
-  }
-];
+const TOOLTIP_CONTENT = (
+  <ul>
+    <li>Julian David Ruiz Herrera</li>
+    <li>Juan Felipe Usuga Villegas</li>
+    <li>Jonatan Urrego Zea</li>
+    <li>Johan Sebastian Cano Garcia</li>
+    <li>Raul vladimir Gaitan Vaca</li>
+  </ul>
+);
 
 function DrawerAppBar() {
+  const [open, setOpen] = useState(false);
+
+  const handleTooltipClose = () => {
+    setOpen(false);
+  };
+
+  const handleTooltipOpen = () => {
+    setOpen(true);
+  };
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              News
+              Colleges Recommender
             </Typography>
-            <Button color="inherit">Login</Button>
+            <Button color="inherit" href="https://github.com/juanfeuv/tae_taller_1/blob/main/Reporte%20T%C3%A9cnico%20de%20agrupaci%C3%B3n%20de%20universidades.docx.pdf" target="_blank">Reporte</Button>
+            <Button color="inherit" href="https://youtu.be/yLuoTi10vbY" target="_blank">Video</Button>
+            <ClickAwayListener onClickAway={handleTooltipClose}>
+              <div>
+                <Tooltip
+                  PopperProps={{
+                    disablePortal: true,
+                  }}
+                  onClose={handleTooltipClose}
+                  open={open}
+                  disableFocusListener
+                  disableHoverListener
+                  disableTouchListener
+                  title={TOOLTIP_CONTENT}
+                >
+                  <Button onClick={handleTooltipOpen} color="inherit">Integrantes</Button>
+                </Tooltip>
+              </div>
+            </ClickAwayListener>
           </Toolbar>
         </AppBar>
       </Box>

@@ -1,7 +1,10 @@
 import { Mongo } from 'meteor/mongo';
 
-const INDEXES = [];
-
+const INDEXES = [
+  {
+    costoMatricula: -1,
+  }
+];
 
 const Colleges = new Mongo.Collection('colleges');
 
