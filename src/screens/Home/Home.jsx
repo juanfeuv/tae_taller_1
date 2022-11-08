@@ -40,6 +40,7 @@ const Home = () => {
 
   useEffect(() => {
     getColleges(value === 0);
+    // eslint-disable-next-line
   }, []);
 
   const Columns = [
@@ -122,7 +123,7 @@ const Home = () => {
       sortable: false,
       Cell: (row) => (
         <Tooltip title={row.value}>
-          <a href={`//${row.value}`} target="_blank" rel="external">
+          <a href={`//${row.value}`} target="_blank" rel="noreferrer">
             {row.value}
           </a>
         </Tooltip>

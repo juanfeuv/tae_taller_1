@@ -76,6 +76,7 @@ const Filters = ({ open, setOpen, getColleges, isMap }) => {
 
   useEffect(() => {
     getStates();
+    // eslint-disable-next-line
   }, []);
 
   return (
