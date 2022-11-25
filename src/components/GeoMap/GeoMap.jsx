@@ -1,3 +1,5 @@
+import 'mapbox-gl/dist/mapbox-gl.css';
+
 import DeckGL from '@deck.gl/react';
 import Grid from '@mui/material/Grid';
 import React, { useState } from "react";
