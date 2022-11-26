@@ -1,4 +1,4 @@
-# Reporte Técnico
+# Reporte Técnico - Taller de Clustering no supervisado:  Información de instituciones de educación superior en U.S.
 
 ## Integrantes
 * Julian David Ruiz Herrera
@@ -11,9 +11,7 @@
 * Video youtube: https://www.youtube.com/watch?v=Tsezvuh_IAw
 * Link APP: https://zesty-puffpuff-d5a7f7.netlify.app/ 
 
-**Taller de Clustering no supervisado:  Información de instituciones de educación superior en U.S.**
-
-1. **Introducción**
+## 1. **Introducción**
 
 El siguiente reporte técnico trata la agrupación de universidades en Estados Unidos a partir de datos que se proporcionan a través de informes federales de instituciones, datos sobre ayuda financiera federal e información fiscal. Estos datos brindan información sobre el desempeño de las escuelas que reciben dólares de ayuda financiera federal y los resultados de los estudiantes de esas escuelas.
 
@@ -27,12 +25,12 @@ los cuales son:
 
 Y se usaron métodos de aprendizaje no supervisado para entender qué porcentaje de la varianza en los datos explicaban estas variables.
 
-2. **Desarrollo técnico**
-1. **Selección de los datos a usar**
+## 2. **Desarrollo técnico**
+### 2.1. **Selección de los datos a usar**
 
 Para poder implementar cualquier modelo se necesita tener un set de datos completo e imputado con el cual se puedan hacer análisis y operaciones sin inconvenientes. Para poder seleccionar el mejor grupo de variables, nos basamos en la documentación y mediante un análisis de componentes principales que hicimos en paralelo.
 
-**2.1.1 Análisis de componentes principales**
+#### **2.1.1 Análisis de componentes principales**
 
 Haciendo el análisis de porcentaje de valores faltantes se tiene que 1249 descriptores de los 1725 que tienen los datos, tienen más del 60% de valores como faltantes, por lo tanto, se tiene que hacer uso de la documentación para tratar de eliminar todo este ruido. (Anexo 1)
 
@@ -78,11 +76,11 @@ Se obtiene la siguiente matriz de datos:
 
 En donde blanco=Na, negro= hay dato
 
-1. **Metodología**
+##### 2.1.1.1. **Metodología**
 
 Para realizar la agrupación se utilizaron dos métodos diferentes, la primera fue imputar los datos faltantes como la media de toda la columna y hacer un análisis de componentes principales y por otro lado se usó la función iteractiveimputer() de sklearn con la que se busca hacer imputación utilizando métodos estadísticos más robustos, claramente estos métodos usan medidas estandarizadas para tener una equivalencia entre variables.
 
-2. **Agrupación con datos imputados por la media Y PCA**
+##### 2.1.1.2. **Agrupación con datos imputados por la media Y PCA**
 
 Con los datos imputados por la media obtenemos la siguiente matriz de correlaciones:
 
@@ -90,7 +88,7 @@ Con los datos imputados por la media obtenemos la siguiente matriz de correlacio
 
 De la cual se puede interpretar que existe una gran correlación entre todas las variables que hablan de costos mientras que para la variable COSTT4\_\* se tiene que entre la clase P y A no se encuentra correlación por lo que sí se pueden clasificar como variables diferentes e incorrelacionadas. Por otra parte, las variables TUITTIONFEE\_IN y TUITTIONFEE\_OUT presentan una gran correlación por lo que se elimina la que tenga menos información que es TUITTIONFEE\_OUT
 
-3. Resultados
+##### 2.1.1.3. Resultados
 
 Cuando se hace el análisis de componentes principales se obtienen los siguientes resultados:
 
@@ -98,13 +96,13 @@ Cuando se hace el análisis de componentes principales se obtienen los siguiente
 
 ![image](https://user-images.githubusercontent.com/45887686/204106300-72b41fca-c323-454d-99e3-4588eea580fe.png)
 
-4. **Conclusión de la agrupación por medias**
+##### 2.1.1.4. **Conclusión de la agrupación por medias**
 
 ![image](https://user-images.githubusercontent.com/45887686/204106395-f48c0fe2-88fa-4a4b-b592-199a1216c6b5.png)
 
 Con las tres componentes principales conformadas se obtiene que las agrupaciones estiman el 64% de la varianza, lo cual no es muy eficiente. Pero si se fuera a dejar está agrupación se tendría tres agrupaciones con una base en los costos de las variables valor de universidad(TUITTIONFEE\_\*), los ingresos de la familia(INC\_PCT\_\*) y en menor medida para la tercera componente el tipo de estructura de gobierno que tiene la institución(CONTROL).
 
-**2.1.14 Agrupación con datos imputados por ITERATIVEIMPUTER() Y Cluster**
+##### **2.1.1.5 Agrupación con datos imputados por ITERATIVEIMPUTER() Y Cluster**
 
 Las únicas variables que no tienen datos faltantes son, INSTNM, CONTROL, HCM2 y STBBR, pero cuando se observan las variables INC\_PCT\_\* notamos que tienen una gran cantidad de filas únicamente con el valor “PrivacySupressed”. Se asume esta notación como un valor faltante.
 
@@ -157,13 +155,13 @@ Porcentaje de estudiantes dados los ingresos familiares. **INC\_PCT\_LO**, (0-$3
 
 **INC\_PCT\_H2**, ($110,001+)
 
-2. **Manejo de los datos faltantes**
+### 2.2. **Manejo de los datos faltantes**
 
 Para poder realizar nuestro análisis adecuadamente debemos verificar y arreglar si es el caso los datos faltantes.
 
 En nuestro proceso nos encontramos con 3 conjuntos de variables relacionadas a los cuales les faltaban valores y estos eran posibles completar. estos serían: **INC\_PCT\_\*,  COSTT4\_\*, TUITIONFEE\_\*.**
 
-1. **Para INC\_PCT\_\***
+#### 2.2.1. **Para INC\_PCT\_\***
 
 Para estas variables llenaremos los datos faltantes usando multiple imputation y basándose en la variable CONTROL, además aprovechamos y cambiamos el formato.
 
@@ -175,7 +173,7 @@ Para estas variables llenaremos los datos faltantes usando multiple imputation y
 
 ![image](https://user-images.githubusercontent.com/45887686/204106564-d0f7ed9c-5ae9-4650-bfc8-2e1b7a34239c.png)
 
-2. **Para COSTT4\_\***
+#### 2.2.2. **Para COSTT4\_\***
 
 Dado que cuando se tenía un costo anual general para los estudiantes no se suele tener un costo por programa anual de los mismos, pero si se tiene cuando falta, podemos decir que estas 2 variables se auto complementan, por eso decidimos combinarlas para reducir la cantidad de nulos. (Esta combinación la hacemos en la variable **COSTT4\_A**).
 
@@ -187,7 +185,7 @@ Dado que cuando se tenía un costo anual general para los estudiantes no se suel
 
 ![image](https://user-images.githubusercontent.com/45887686/204106601-36dd4b90-d037-4356-b818-64d82420dbe6.png)
 
-3. **Para TUITIONFEE\_\***
+#### 2.2.3. **Para TUITIONFEE\_\***
 
 Para este caso hacemos algo similar al anterior, pero esta vez combinamos en **TUITIONFEE\_IN** y **TUITIONFEE\_OUT** la variable **TUITION FEE PROG.**
 
@@ -199,7 +197,7 @@ Para este caso hacemos algo similar al anterior, pero esta vez combinamos en **T
 
 ![image](https://user-images.githubusercontent.com/45887686/204106624-cb73c938-3edd-4461-9cb4-6c7cba17cfee.png)
 
-3. **Análisis de nuestras variables**
+### 2.3. **Análisis de nuestras variables**
 
 Antes de continuar analizamos cómo se correlacionan estas variables, para así poder descartar aquellas que no nos sirvan. Además hacemos unos cambios en el nombre de las variables para poder entenderlas más fácilmente.
 
@@ -211,29 +209,29 @@ Descartamos aquellas variables con mucha correlación y dejamos las que consider
 
 ![image](https://user-images.githubusercontent.com/45887686/204106734-d39f1d00-8b59-4648-9407-252f6af288be.png)
 
-4. **Cantidad óptima de clusters**
+### 2.4. **Cantidad óptima de clusters**
 
 Encontramos que el número óptimo de clusters para nuestro conjunto de datos es de 3, este valor se encontró mediante los siguientes análisis.
 
-1. **Dendograma**
+#### 2.4.1. **Dendograma**
 
 Mediante este método encontramos que el número óptimo de clusters podría ser de 2, 3 y hasta 4 grupos.
 
 ![image](https://user-images.githubusercontent.com/45887686/204106785-fba99d97-d269-4434-a293-09f88efd4d0a.png)
 
-2. **Elbow Curve**
+#### 2.4.2. **Elbow Curve**
 
 De este método podemos concluir que el número óptimo de clusters está entre 3 o 4 clusters.
 
 ![image](https://user-images.githubusercontent.com/45887686/204106798-ccdb3243-5347-439a-83ba-cab0d37b366d.png)
 
-3. **Estadístico de Gap**
+#### 2.4.3. **Estadístico de Gap**
 
 Para este caso el método no nos arroja información clara sobre el número óptimo de clusters, se podría decir que en 3 clusters hay un pequeño cambio que podría ser tomado en cuenta, aun así no lo consideramos como una señal clara.
 
 ![image](https://user-images.githubusercontent.com/45887686/204107013-38cf8e2e-41b6-4720-b98c-b4ef0dcd92ca.png)
 
-4. **Coeficiente de Silueta**
+#### 2.4.4. **Coeficiente de Silueta**
 
 Para este método vemos que 3 es el número óptimo de clusters.
 
@@ -245,7 +243,7 @@ Para este método vemos que 3 es el número óptimo de clusters.
 
 ![image](https://user-images.githubusercontent.com/45887686/204107057-b9f6e58f-0238-479e-a3db-3111915a05c8.png)
 
-5. **Clustering - Jerárquico**
+### 2.5. **Clustering - Jerárquico**
 
 Ya teniendo el número de clusters más óptimo, realizamos el agrupamiento.
 
@@ -255,28 +253,28 @@ Ya teniendo el número de clusters más óptimo, realizamos el agrupamiento.
 
 ![image](https://user-images.githubusercontent.com/45887686/204107082-182380ae-36c7-4600-9561-8f6f47d06a1c.png)
 
-3. **Caracterización**
+## 3. **Caracterización**
 
-**Grupo 0:**
+### **Grupo 0:**
 
 ![image](https://user-images.githubusercontent.com/45887686/204107111-5c16ce61-f810-4d9a-af23-45945dadea1f.png)
 
 ![image](https://user-images.githubusercontent.com/45887686/204107117-4a02922a-ca45-4b92-b85d-fd3d94789629.png)
 
-**Grupo 1:**
+### **Grupo 1:**
 
 ![image](https://user-images.githubusercontent.com/45887686/204107121-9a2957ca-b8ec-40b7-834a-17d2281cfc19.png)
 
 ![image](https://user-images.githubusercontent.com/45887686/204107196-7ccada6f-71d7-4096-ad78-851cca8725bd.png)
 
-**Grupo 2:**
+### **Grupo 2:**
 
 ![image](https://user-images.githubusercontent.com/45887686/204107200-0de01835-20a3-44db-ab27-241f0ab1247c.png)
 
 ![image](https://user-images.githubusercontent.com/45887686/204107207-c8a83195-6bd8-48f8-bb26-63bf3c61de20.png)
 
-4. **Conclusiones del agrupamiento**
-1. **Conclusión**
+## 4. **Conclusiones del agrupamiento**
+### 4.1. **Conclusión**
 
 Grupo 0 (Azul): En este grupo se encuentran universidades con un costo promedio de matrícula de (16000 dólares), pero que puede llegar a variar mucho. En este grupo se encuentra un mayor porcentaje de estudiantes M1 en comparación con los de H2.
 
@@ -288,7 +286,7 @@ Grupo 2 (Amarillo): En este grupo se encuentran universidades con un costo prome
 
 Grupo 2: Universidades de costo bajo y estudiantes principalmente de clase media
 
-2. **Conclusión**
+### 4.2. **Conclusión**
 
 También encontramos que existe una relación entre los grupos que encontramos, con la variable \*CONTROL\*. Recordemos que esta variable nos identifica si la estructura de gobierno de la institución es:
 
@@ -308,7 +306,7 @@ Dado el control.
 
 ![image](https://user-images.githubusercontent.com/45887686/204107293-8b0d2b49-e451-4986-82a0-83068040fe56.png)
 
-**5. Cómo implementar esto en Colombia**
+## **5. Cómo implementar esto en Colombia**
 
 Para generar un conjunto de datos que nos permita hacer esto en Colombia necesitamos al menos recopilar variables que funjan como equivalentes a las variables que utilizamos para el contexto colombiano. En general los valores de matrícula y los costos anuales o semestrales están aproximadamente bien cubiertos considerando una clasificación de las universidades por ciudad o
 
@@ -316,7 +314,7 @@ por departamento. Solo quedaría evaluar un equivalente a las variables HCM\_PCT
 
 Es posible hacer un análisis similar sin clasificar las universidades geográficamente dado que en general en todo el territorio nacional los costos son similares en comparación con las diferencias que hay entre estados de Estados Unidos, de manera que se consideren todas las universidades del país y se haga todo el análisis directamente.
 
-**Referencias:**
+## **Referencias:**
 
 planteamiento para el enfoque de los datos: https://www.cbsnews.com/news/the-biggest-problems-with-americas-colleges/
 
